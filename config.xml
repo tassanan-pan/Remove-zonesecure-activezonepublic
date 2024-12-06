@@ -1,0 +1,18 @@
+ตรวจสอบ zone secure ว่ามี service หรือ port อะไรบ้างเพื่อที่จะนำไปใน zone public
+sudo firewall-cmd --zone=securezone --list-all
+
+ทำการลบ securezone แล้ว public zone จะ active automatic
+sudo firewall-cmd --zone=securezone --remove-interface=ens160 --permanent
+
+Add service ตามต้องการ
+sudo firewall-cmd --zone=public --permanent --add-service=http
+sudo firewall-cmd --zone=public --permanent --add-service=https
+sudo firewall-cmd --reload
+
+Add port ตามต้องการ
+sudo firewall-cmd --zone=public --permanent --add-port=8080/tcp
+sudo firewall-cmd --reload
+sudo firewall-cmd --zone=public --list-all
+
+ตรวจสอบดูว่ามีการฟังไหมตาม port ที่เรา add
+sudo ss -tuln | grep 8080
